@@ -114,7 +114,7 @@ export default function Hero() {
               ["From $20", "Pet memorials, with free return shipping"],
             ].map(([k, v]) => (
               <div key={k} className="flex items-baseline gap-4 sm:block">
-                <dt className="font-display w-28 shrink-0 text-[1.9rem] leading-none sm:w-auto md:text-4xl">{k}</dt>
+                <dt className="font-display w-32 shrink-0 whitespace-nowrap text-[1.75rem] leading-none sm:w-auto md:text-4xl">{k}</dt>
                 <dd className="font-sans text-[0.7rem] uppercase leading-snug tracking-[0.14em] text-muted sm:mt-2">{v}</dd>
               </div>
             ))}
