@@ -1,26 +1,215 @@
 @import "tailwindcss";
 
+@theme {
+  --color-paper: #f6f1e7;
+  --color-paper-2: #efe7d8;
+  --color-paper-3: #e5dac5;
+  --color-ink: #2a2230;
+  --color-ink-2: #4a4150;
+  --color-muted: #7a6f7c;
+  --color-lavender: #7d6ba3;
+  --color-lavender-soft: #b9acd3;
+  --color-sage: #7f8f6e;
+  --color-sage-deep: #56644a;
+  --color-blush: #d8a9a1;
+  --color-gold: #a8844a;
+  --color-night: #1c1721;
+  --color-night-2: #262029;
+
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-serif: var(--font-garamond), "EB Garamond", Georgia, serif;
+  --font-sans: var(--font-jost), "Jost", ui-sans-serif, system-ui, sans-serif;
+
+  --ease-petal: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  background: var(--color-paper);
+  -webkit-text-size-adjust: 100%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Laid-paper grain over everything, like the plates were printed on it */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.32;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .25  0 0 0 .22 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+::selection {
+  background: var(--color-lavender-soft);
+  color: var(--color-ink);
+}
+
+@layer components {
+.font-display {
+  font-family: var(--font-display);
+  font-feature-settings: "liga", "dlig";
+}
+
+.eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* The arch — the shape of Melissa's resin blocks, reused as a frame */
+.arch {
+  border-radius: 999px 999px 18px 18px;
+  overflow: hidden;
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--color-ink) 22%, transparent) 12%, color-mix(in oklab, var(--color-ink) 22%, transparent) 88%, transparent);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-radius: 999px;
+  padding: 0.95rem 1.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transition:
+    background-color 0.4s var(--ease-petal),
+    color 0.4s var(--ease-petal),
+    border-color 0.4s var(--ease-petal),
+    transform 0.4s var(--ease-petal);
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-ink {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+.btn-ink:hover {
+  background: var(--color-lavender);
+}
+.btn-ghost {
+  border: 1px solid color-mix(in oklab, var(--color-ink) 28%, transparent);
+  color: var(--color-ink);
+}
+.btn-ghost:hover {
+  border-color: var(--color-ink);
+  background: color-mix(in oklab, var(--color-ink) 5%, transparent);
+}
+.btn-paper {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+.btn-paper:hover {
+  background: var(--color-lavender-soft);
+}
+
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.5s var(--ease-petal);
+}
+.link-underline:hover {
+  background-size: 100% 1px;
+}
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 60s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+.sway {
+  animation: sway 9s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+
+@keyframes flutter {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+  50% {
+    transform: scaleX(0.78);
+  }
+}
+.flutter {
+  animation: flutter 1.6s ease-in-out infinite;
+}
+
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
