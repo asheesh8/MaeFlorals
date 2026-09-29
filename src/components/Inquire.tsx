@@ -5,10 +5,14 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { occasions, site } from "@/lib/content";
 
+const preservationFormats = ["Pressed frame", "Resin keepsake", "Not sure yet"];
+
 export default function Inquire() {
   const [occasion, setOccasion] = useState(occasions[0]);
+  const [format, setFormat] = useState(preservationFormats[2]);
   const [sent, setSent] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const isWedding = occasion === "Wedding bouquet";
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -18,8 +22,13 @@ export default function Inquire() {
       `Name: ${f.get("name")}`,
       `Reach me at: ${f.get("contact")}`,
       `I'm interested in: ${occasion}`,
-      f.get("date") ? `Date: ${f.get("date")}` : "",
-      f.get("message") ? `\n${f.get("message")}` : "",
+      isWedding && f.get("weddingDate") ? `Wedding date: ${f.get("weddingDate")}` : "",
+      isWedding && f.get("weddingLocation") ? `Wedding location: ${f.get("weddingLocation")}` : "",
+      isWedding && f.get("bouquetFlowers") ? `Flowers expected in the bouquet: ${f.get("bouquetFlowers")}` : "",
+      isWedding && f.get("importantFlowers") ? `Most important flowers or details: ${f.get("importantFlowers")}` : "",
+      isWedding ? `Preferred preservation: ${format}` : "",
+      !isWedding && f.get("date") ? `Date: ${f.get("date")}` : "",
+      f.get("message") ? `Additional notes: ${f.get("message")}` : "",
     ].filter(Boolean);
     setSent(lines.join("\n"));
   }
@@ -32,13 +41,13 @@ export default function Inquire() {
       <div className="pointer-events-none absolute -left-40 top-20 h-[60vh] w-[60vh] rounded-full bg-lavender-soft/25 blur-[120px]" />
       <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 gap-16 px-5 md:px-10 lg:grid-cols-12">
         <div className="lg:col-span-5">
-          <p className="eyebrow text-muted">Begin a keepsake</p>
+          <p className="eyebrow text-muted">Bridal bouquet preservation inquiry</p>
           <h2 className="font-display mt-6 text-[clamp(2.8rem,5.4vw,5rem)] font-light leading-[0.98] tracking-[-0.015em]">
-            Tell Melissa about <span className="italic text-lavender">your flowers.</span>
+            Tell Melissa about <span className="italic text-lavender">your bouquet.</span>
           </h2>
           <p className="mt-6 max-w-md text-ink-2">
-            Planning a wedding, saying goodbye, or holding on to a pet? Reach out as early as you can — flowers keep their
-            colour best when they arrive fresh.
+            Planning your wedding? Share the date, location and flowers that matter most so Melissa can help you choose a
+            pressed frame or resin piece. For another kind of keepsake, choose it in the form.
           </p>
 
           <dl className="mt-12 space-y-7">
@@ -103,17 +112,81 @@ export default function Inquire() {
                       <input name="contact" required className={input} placeholder="How should she reach you?" />
                     </label>
                   </div>
+
+                  {isWedding ? (
+                    <div className="space-y-8 rounded-[24px] border border-lavender/20 bg-paper/55 p-5 md:p-7">
+                      <p className="font-display text-3xl leading-none">Your wedding &amp; bouquet</p>
+                      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                        <label className="block">
+                          <span className="label text-muted">When is the wedding?</span>
+                          <input name="weddingDate" type="date" required className={input} />
+                        </label>
+                        <label className="block">
+                          <span className="label text-muted">Where is the wedding?</span>
+                          <input
+                            name="weddingLocation"
+                            required
+                            autoComplete="address-level2"
+                            className={input}
+                            placeholder="Venue, town & state"
+                          />
+                        </label>
+                      </div>
+                      <label className="block">
+                        <span className="label text-muted">What flowers will be in your bouquet?</span>
+                        <textarea
+                          name="bouquetFlowers"
+                          required
+                          rows={3}
+                          className={`${input} resize-none`}
+                          placeholder="Roses, peonies, dahlias, greenery… It’s okay if you’re still deciding."
+                        />
+                      </label>
+                      <label className="block">
+                        <span className="label text-muted">Which flowers or details matter most?</span>
+                        <textarea
+                          name="importantFlowers"
+                          required
+                          rows={3}
+                          className={`${input} resize-none`}
+                          placeholder="A family flower, ribbon, invitation, boutonnière or particular bloom…"
+                        />
+                      </label>
+                      <fieldset>
+                        <legend className="label text-muted">Would you like a frame or resin piece?</legend>
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          {preservationFormats.map((option) => (
+                            <button
+                              type="button"
+                              key={option}
+                              onClick={() => setFormat(option)}
+                              aria-pressed={format === option}
+                              className={`rounded-full border px-4 py-2 font-sans text-[0.8rem] tracking-wide transition-all duration-300 ${
+                                format === option
+                                  ? "border-lavender bg-lavender text-paper"
+                                  : "border-ink/20 text-ink-2 hover:border-ink/50"
+                              }`}
+                            >
+                              {option}
+                            </button>
+                          ))}
+                        </div>
+                      </fieldset>
+                    </div>
+                  ) : (
+                    <label className="block">
+                      <span className="label text-muted">Service, event or pickup date (if any)</span>
+                      <input name="date" type="date" className={input} />
+                    </label>
+                  )}
+
                   <label className="block">
-                    <span className="label text-muted">Wedding, service or pickup date (if any)</span>
-                    <input name="date" type="date" className={input} />
-                  </label>
-                  <label className="block">
-                    <span className="label text-muted">Tell her a little more</span>
+                    <span className="label text-muted">Anything else Melissa should know?</span>
                     <textarea
                       name="message"
                       rows={4}
                       className={`${input} resize-none`}
-                      placeholder="The flowers, the piece you're imagining, your pet's name…"
+                      placeholder={isWedding ? "Your vision, colours, timing or questions…" : "The flowers, the piece you're imagining, your pet's name…"}
                     />
                   </label>
                   <button type="submit" className="btn btn-ink">
@@ -121,13 +194,13 @@ export default function Inquire() {
                   </button>
                 </motion.form>
               ) : (
-                <motion.div key="sent" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6">
+                <motion.div key="sent" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="space-y-6" aria-live="polite">
                   <h3 className="font-display text-4xl">
                     Your note is ready <span className="italic text-lavender">to send.</span>
                   </h3>
                   <pre className="whitespace-pre-wrap rounded-2xl bg-paper p-5 font-serif text-base text-ink-2">{sent}</pre>
                   <div className="flex flex-wrap gap-3">
-                    <a href={`${site.smsHref}?&body=${encodeURIComponent(sent)}`} className="btn btn-ink">
+                    <a href={`${site.smsHref}?body=${encodeURIComponent(sent)}`} className="btn btn-ink">
                       Text it to Melissa
                     </a>
                     <button

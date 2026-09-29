@@ -6,8 +6,6 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Sprig from "./Sprig";
 import { categories, gallery, type Category } from "@/lib/content";
 
-const shapes = ["aspect-square rounded-[22px]", "aspect-[4/5] arch", "aspect-[4/5] rounded-[22px]"];
-
 export default function Gallery() {
   const [cat, setCat] = useState<Category | "all">("all");
   const [open, setOpen] = useState<number | null>(null);
@@ -64,7 +62,7 @@ export default function Gallery() {
           </LayoutGroup>
         </div>
 
-        <motion.ul layout className="mt-14 columns-2 gap-4 md:columns-3 md:gap-6 lg:columns-4">
+        <motion.ul layout className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
           <AnimatePresence mode="popLayout">
             {items.map((g, i) => (
               <motion.li
@@ -74,16 +72,16 @@ export default function Gallery() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.96 }}
                 transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="mb-4 break-inside-avoid md:mb-6"
               >
                 <button onClick={() => setOpen(i)} className="group block w-full text-left" aria-label={`Enlarge: ${g.alt}`}>
-                  <div className={`relative w-full overflow-hidden bg-paper-3 ${g.round ? "aspect-square rounded-full" : shapes[i % shapes.length]}`}>
+                  <div className="photo-frame w-full">
                     <Image
                       src={g.src}
                       alt={g.alt}
                       fill
                       sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw"
-                      className="object-cover transition-transform duration-[1.4s] ease-[var(--ease-petal)] group-hover:scale-[1.06]"
+                      loading={i < 2 ? "eager" : "lazy"}
+                      className="object-contain p-2 transition-transform duration-700 ease-[var(--ease-petal)] group-hover:scale-[1.025]"
                     />
                   </div>
                 </button>
@@ -95,21 +93,15 @@ export default function Gallery() {
 
       <AnimatePresence>
         {open !== null && items[open] && (
-          <motion.div
+          <div
             className="fixed inset-0 z-[80] flex items-center justify-center bg-night/92 p-5 backdrop-blur-sm"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
             onClick={() => setOpen(null)}
             role="dialog"
             aria-modal="true"
             aria-label={items[open].alt}
           >
-            <motion.figure
+            <figure
               key={items[open].src}
-              initial={{ opacity: 0, y: 20, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="relative w-full max-w-[560px]"
               onClick={(e) => e.stopPropagation()}
             >
@@ -122,11 +114,11 @@ export default function Gallery() {
                   {open + 1} / {items.length}
                 </span>
               </figcaption>
-            </motion.figure>
+            </figure>
             <button onClick={(e) => (e.stopPropagation(), step(-1))} className="absolute left-3 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full border border-paper/30 text-paper md:left-8" aria-label="Previous">←</button>
             <button onClick={(e) => (e.stopPropagation(), step(1))} className="absolute right-3 top-1/2 grid size-12 -translate-y-1/2 place-items-center rounded-full border border-paper/30 text-paper md:right-8" aria-label="Next">→</button>
-            <button onClick={() => setOpen(null)} className="label absolute right-5 top-5 text-paper/70 md:right-8 md:top-8" aria-label="Close">Close ✕</button>
-          </motion.div>
+            <button onClick={() => setOpen(null)} className="absolute right-4 top-4 grid size-12 place-items-center rounded-full border border-paper/30 bg-night text-xl text-paper md:right-8 md:top-8" aria-label="Close">✕</button>
+          </div>
         )}
       </AnimatePresence>
     </section>

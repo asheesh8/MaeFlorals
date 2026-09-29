@@ -1,16 +1,13 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "motion/react";
 import Sprig from "./Sprig";
 import { services } from "@/lib/content";
 
 export default function Services() {
   return (
-    <section id="preserve" className="relative bg-paper-2/60 py-28 md:py-40">
+    <section id="preserve" className="relative overflow-hidden bg-paper-2/60 py-28 md:py-40">
       <div className="mx-auto grid max-w-[1400px] grid-cols-1 gap-16 px-5 md:px-10 lg:grid-cols-12">
         <div className="lg:col-span-4">
-          <div className="lg:sticky lg:top-32">
+          <div>
             <p className="eyebrow text-muted">What she keeps</p>
             <h2 className="font-display mt-6 text-[clamp(2.8rem,5vw,4.6rem)] font-light leading-[0.98] tracking-[-0.015em]">
               Five ways to hold on to <span className="italic text-lavender">a flower.</span>
@@ -27,12 +24,8 @@ export default function Services() {
 
         <ol className="flex flex-col gap-6 lg:col-span-8">
           {services.map((s, i) => (
-            <motion.li
+            <li
               key={s.no}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-12% 0px" }}
-              transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
               className="group relative grid grid-cols-1 gap-6 overflow-hidden rounded-[28px] border border-ink/10 bg-paper p-5 shadow-[0_1px_0_rgba(42,34,48,0.04),0_30px_60px_-40px_rgba(42,34,48,0.25)] sm:grid-cols-[minmax(0,220px)_1fr] sm:p-6 md:gap-10"
             >
               <div className="arch relative aspect-[4/5] w-full max-w-[260px] bg-paper-3">
@@ -66,7 +59,7 @@ export default function Services() {
                   className={`pointer-events-none absolute -right-6 -top-4 hidden h-40 w-auto opacity-0 transition-all duration-1000 ease-[var(--ease-petal)] group-hover:-translate-y-2 group-hover:rotate-6 group-hover:opacity-90 md:block ${i % 2 ? "-scale-x-100" : ""}`}
                 />
               </div>
-            </motion.li>
+            </li>
           ))}
         </ol>
       </div>

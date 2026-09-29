@@ -1,113 +1,90 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from "motion/react";
-import { useRef } from "react";
+import Link from "next/link";
 import Sprig from "./Sprig";
 import { site } from "@/lib/content";
 
-const ease = [0.22, 1, 0.36, 1] as const;
-
-function Line({ children, delay, className = "" }: { children: React.ReactNode; delay: number; className?: string }) {
+function Line({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <span className="block overflow-hidden pb-[0.12em]">
-      <motion.span
-        className={`block ${className}`}
-        initial={{ y: "110%" }}
-        animate={{ y: 0 }}
-        transition={{ duration: 1.3, delay, ease }}
-      >
-        {children}
-      </motion.span>
+    <span className={`block pb-[0.12em] ${className}`}>
+      {children}
     </span>
   );
 }
 
 export default function Hero() {
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const plateY = useTransform(scrollYProgress, [0, 1], [0, 140]);
-  const textY = useTransform(scrollYProgress, [0, 1], [0, -60]);
-
-  // gentle pointer parallax on the plate
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const sx = useSpring(mx, { stiffness: 40, damping: 18 });
-  const sy = useSpring(my, { stiffness: 40, damping: 18 });
-  const tiltX = useTransform(sy, [-1, 1], [3, -3]);
-  const tiltY = useTransform(sx, [-1, 1], [-4, 4]);
-  const flyX = useTransform(sx, [-1, 1], [-26, 26]);
-  const flyY = useTransform(sy, [-1, 1], [-18, 18]);
-
   return (
     <section
       id="top"
-      ref={ref}
-      onPointerMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        mx.set(((e.clientX - r.left) / r.width) * 2 - 1);
-        my.set(((e.clientY - r.top) / r.height) * 2 - 1);
-      }}
-      className="relative overflow-hidden pb-20 pt-32 md:pb-28 md:pt-40"
+      className="relative overflow-hidden pb-14 pt-28 md:pb-20 md:pt-36"
     >
       {/* soft wash behind the plate */}
       <div className="pointer-events-none absolute -right-40 top-10 h-[70vh] w-[70vh] rounded-full bg-lavender-soft/25 blur-[120px]" />
       <div className="pointer-events-none absolute -left-40 bottom-0 h-[50vh] w-[50vh] rounded-full bg-blush/20 blur-[120px]" />
 
+      <Image
+        src="/art/bouquet.webp"
+        alt=""
+        width={1191}
+        height={1600}
+        priority
+        sizes="(min-width: 768px) 720px, 520px"
+        className="pointer-events-none absolute -right-36 top-32 z-0 h-auto w-[32rem] select-none opacity-[0.16] mix-blend-multiply md:-right-24 md:top-24 md:w-[44rem] md:opacity-[0.14] lg:hidden"
+      />
+      <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden lg:hidden">
+        <Image
+          src="/art/fern.webp"
+          alt=""
+          width={574}
+          height={962}
+          sizes="160px"
+          className="wind-leaf wind-leaf-a absolute -left-12 top-[19rem] h-auto w-36 opacity-20 md:left-[43%] md:top-28 md:w-44 md:opacity-25"
+        />
+        <Image
+          src="/art/fern.webp"
+          alt=""
+          width={574}
+          height={962}
+          sizes="180px"
+          className="wind-leaf wind-leaf-b absolute -right-10 top-44 h-auto w-40 opacity-20 md:right-6 md:top-20 md:w-48 md:opacity-25"
+        />
+      </div>
+
       <Sprig name="fern" width={130} className="-left-12 bottom-0 hidden opacity-60 md:block" rotate={-32} speed={0.25} />
       <Sprig name="hydrangea" width={170} className="bottom-6 left-[38%] hidden opacity-80 lg:block" rotate={12} speed={0.35} />
 
       <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-12 px-5 md:px-10 lg:grid-cols-12 lg:gap-6">
-        <motion.div style={{ y: textY }} className="relative z-10 lg:col-span-7">
-          <motion.p
-            className="eyebrow flex items-center gap-4 text-muted"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.1 }}
-          >
+        <div className="relative z-10 lg:col-span-7">
+          <p className="eyebrow flex items-center gap-4 text-muted">
             <span className="h-px w-10 bg-ink/30" />
             Floral art &amp; preservation · {site.town}
-          </motion.p>
+          </p>
 
           <h1 className="font-display mt-8 text-[clamp(3.3rem,6.7vw,7.2rem)] font-light leading-[0.9] tracking-[-0.02em]">
-            <Line delay={0.2}>Keep the flowers.</Line>
-            <Line delay={0.38} className="italic text-lavender">
+            <Line>Keep the flowers.</Line>
+            <Line className="italic text-lavender">
               Keep the day.
             </Line>
           </h1>
 
-          <motion.p
-            className="mt-9 max-w-[34rem] text-[1.2rem] leading-relaxed text-ink-2"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.7, ease }}
-          >
+          <p className="mt-7 max-w-[34rem] text-[1.1rem] leading-relaxed text-ink-2 md:mt-9 md:text-[1.2rem]">
             Melissa presses, dries and sets the flowers you can&rsquo;t bear to lose — wedding bouquets, sympathy
             arrangements, even a beloved pet&rsquo;s fur — into framed botanical art and glass-clear resin.
             Beautifully, and forever.
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="mt-10 flex flex-wrap items-center gap-3"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, delay: 0.85, ease }}
-          >
-            <a href="#inquire" className="btn btn-ink">
+          <div className="mt-8 flex flex-wrap items-center gap-3 md:mt-10">
+            <Link href="/contact" className="btn btn-ink">
               Begin a keepsake
               <span aria-hidden>→</span>
-            </a>
-            <a href="#gallery" className="btn btn-ghost">
+            </Link>
+            <Link href="/gallery" className="btn btn-ghost">
               See her work
-            </a>
-          </motion.div>
+            </Link>
+          </div>
 
-          <motion.dl
-            className="mt-14 grid max-w-xl grid-cols-1 gap-4 border-t border-ink/15 pt-7 sm:grid-cols-3 sm:gap-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.4, delay: 1.1 }}
-          >
+          <dl className="mt-10 grid max-w-xl grid-cols-1 gap-4 border-t border-ink/15 pt-7 sm:mt-14 sm:grid-cols-3 sm:gap-6">
             {[
               ["By hand", "Pressed, placed & poured in Claremont"],
               ["VT & NH", "Southern Vermont, New Hampshire & the Upper Valley"],
@@ -118,51 +95,48 @@ export default function Hero() {
                 <dd className="font-sans text-[0.7rem] uppercase leading-snug tracking-[0.14em] text-muted sm:mt-2">{v}</dd>
               </div>
             ))}
-          </motion.dl>
-        </motion.div>
+          </dl>
+        </div>
 
-        <motion.div style={{ y: plateY }} className="relative mx-auto w-full max-w-[520px] lg:col-span-5">
-          <motion.div
-            style={{ rotateX: tiltX, rotateY: tiltY, transformPerspective: 1200 }}
-            initial={{ opacity: 0, scale: 0.94, filter: "blur(8px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            transition={{ duration: 1.8, delay: 0.3, ease }}
-            className="relative"
-          >
-            <div className="sway">
-              <Image
-                src="/art/bouquet.webp"
-                alt="Hand-coloured botanical illustration of a bridal bouquet of cosmos, asters, roses and hydrangea tied with ribbon"
-                width={1191}
-                height={1600}
-                priority
-                sizes="(min-width: 1024px) 520px, 90vw"
-                className="h-auto w-full drop-shadow-[0_30px_40px_rgba(42,34,48,0.08)]"
-              />
-            </div>
-          </motion.div>
+        <div className="relative mx-auto hidden w-full lg:col-span-5 lg:block lg:max-w-[430px]">
+          <div className="relative">
+            <Image
+              src="/art/fern.webp"
+              alt=""
+              width={574}
+              height={962}
+              sizes="150px"
+              className="wind-leaf wind-leaf-a pointer-events-none absolute -left-10 top-[22%] z-0 h-auto w-[34%] opacity-50"
+            />
+            <Image
+              src="/art/fern.webp"
+              alt=""
+              width={574}
+              height={962}
+              sizes="140px"
+              className="wind-leaf wind-leaf-b pointer-events-none absolute -right-8 top-[8%] z-0 h-auto w-[30%] opacity-45"
+            />
+            <Image
+              src="/art/bouquet.webp"
+              alt="Hand-coloured botanical illustration of a bridal bouquet of cosmos, asters, roses and hydrangea tied with ribbon"
+              width={1191}
+              height={1600}
+              priority
+              sizes="(min-width: 1024px) 520px, 90vw"
+              className="relative z-10 h-auto w-full drop-shadow-[0_30px_40px_rgba(42,34,48,0.08)]"
+            />
+          </div>
 
-          <motion.div
-            style={{ x: flyX, y: flyY }}
-            className="absolute -right-2 top-4 w-20 md:-right-8 md:w-24"
-            initial={{ opacity: 0, x: 60, y: -40 }}
-            animate={{ opacity: 1, x: 0, y: 0 }}
-            transition={{ duration: 2.2, delay: 1.2, ease }}
-          >
+          <div className="absolute -right-2 top-4 w-20 md:-right-8 md:w-24">
             <div className="flutter">
               <Image src="/art/monarch.webp" alt="" width={1024} height={1024} className="h-auto w-full" />
             </div>
-          </motion.div>
+          </div>
 
-          <motion.p
-            className="label mt-4 text-center text-muted"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.6, duration: 1.2 }}
-          >
+          <p className="label mt-4 text-center text-muted">
             Pl. I — A bride&rsquo;s bouquet, drawn before it was pressed
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
       </div>
     </section>
   );

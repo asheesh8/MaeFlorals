@@ -30,17 +30,7 @@
 html {
   background: var(--color-paper);
   -webkit-text-size-adjust: 100%;
-}
-
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
+  scroll-padding-top: 6rem;
 }
 
 body {
@@ -97,6 +87,16 @@ body::before {
 .arch {
   border-radius: 999px 999px 18px 18px;
   overflow: hidden;
+}
+
+.photo-frame {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--color-ink) 10%, transparent);
+  border-radius: 1.25rem;
+  background: var(--color-paper-2);
+  box-shadow: 0 24px 55px -42px color-mix(in oklab, var(--color-ink) 55%, transparent);
 }
 
 .hairline {
@@ -171,18 +171,38 @@ body::before {
   animation-play-state: paused;
 }
 
-@keyframes sway {
+/* The bouquet stays planted; only the loose foliage responds to the "wind". */
+@keyframes wind-leaf-a {
   0%,
   100% {
-    transform: rotate(-2deg);
+    transform: rotate(-24deg);
   }
   50% {
-    transform: rotate(2.5deg);
+    transform: rotate(-21.8deg);
   }
 }
-.sway {
-  animation: sway 9s ease-in-out infinite;
+
+@keyframes wind-leaf-b {
+  0%,
+  100% {
+    transform: rotate(26deg) scaleX(-1);
+  }
+  50% {
+    transform: rotate(23.6deg) scaleX(-1);
+  }
+}
+
+.wind-leaf {
   transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+.wind-leaf-a {
+  animation: wind-leaf-a 17s ease-in-out 1.2s infinite;
+}
+
+.wind-leaf-b {
+  animation: wind-leaf-b 21s ease-in-out 2.4s infinite;
 }
 
 @keyframes flutter {
@@ -211,5 +231,9 @@ select {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .wind-leaf {
+    animation: none !important;
   }
 }

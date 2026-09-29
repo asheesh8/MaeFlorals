@@ -12,11 +12,11 @@ export const site = {
 };
 
 export const nav = [
-  { href: "#preserve", label: "Preservation" },
-  { href: "#process", label: "The Process" },
-  { href: "#pets", label: "Pet Memorials" },
-  { href: "#gallery", label: "Gallery" },
-  { href: "#melissa", label: "About" },
+  { href: "/offerings", label: "Offerings" },
+  { href: "/pet-memorials", label: "Pet Memorials" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Inquiry" },
 ];
 
 export type Service = {

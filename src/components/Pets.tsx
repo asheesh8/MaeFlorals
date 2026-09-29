@@ -43,16 +43,15 @@ export default function Pets() {
             </blockquote>
           </Reveal>
           <Reveal delay={0.15} className="relative mx-auto w-full max-w-[520px] lg:col-span-6">
-            <div className="sway">
-              <Image
-                src="/art/cat.webp"
-                alt="Botanical-style illustration of a grey cat curled asleep in a ring of forget-me-nots"
-                width={1101}
-                height={825}
-                sizes="520px"
-                className="h-auto w-full"
-              />
-            </div>
+            <Image
+              src="/art/cat.webp"
+              alt="Botanical-style illustration of a grey cat curled asleep in a ring of forget-me-nots"
+              width={1101}
+              height={825}
+              sizes="520px"
+              loading="eager"
+              className="h-auto w-full"
+            />
           </Reveal>
         </div>
 
@@ -84,11 +83,11 @@ export default function Pets() {
         </p>
       </div>
 
-      <div className="mt-20 overflow-x-auto pb-4 [scrollbar-width:none]" data-lenis-prevent-wheel="false">
-        <ul className="flex w-max gap-4 px-5 md:gap-6 md:px-10">
+      <div className="mx-auto mt-16 max-w-[1400px] px-5 md:px-10">
+        <ul className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6 lg:grid-cols-4">
           {photos.map((p, i) => (
-            <li key={p.src} className={`relative shrink-0 overflow-hidden bg-paper-3 ${i % 2 ? "arch h-[340px] w-[270px]" : "h-[300px] w-[300px] rounded-[26px] md:mt-10"}`}>
-              <Image src={p.src} alt={p.alt} fill sizes="300px" className="object-cover" />
+            <li key={p.src} className={`photo-frame ${i === photos.length - 1 ? "col-span-2 md:col-span-1" : ""}`}>
+              <Image src={p.src} alt={p.alt} fill sizes="(min-width: 1024px) 25vw, (min-width: 768px) 33vw, 50vw" className="object-contain p-2" />
             </li>
           ))}
         </ul>

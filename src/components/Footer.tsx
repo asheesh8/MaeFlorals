@@ -5,10 +5,15 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden bg-night pt-20 text-paper">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <Image src="/art/garland.webp" alt="" width={1600} height={677} className="mx-auto h-auto w-full max-w-4xl opacity-95" />
-        <p className="font-display mt-6 text-center text-[clamp(4rem,14vw,12rem)] font-light italic leading-[0.9] tracking-[-0.02em]">
-          Mae Florals
-        </p>
+        <Image
+          src="/brand/mae-florals-logo.png"
+          alt="Mae Florals — lavender and white flowers with green leaves"
+          width={1075}
+          height={1205}
+          sizes="280px"
+          className="mx-auto h-auto w-60 rounded-[28px] md:w-72"
+        />
+        <Image src="/art/garland.webp" alt="" width={1600} height={677} className="mx-auto mt-2 h-auto w-full max-w-4xl opacity-90" />
         <p className="label mt-4 text-center text-paper/55">Floral art &amp; preservation · {site.town}</p>
 
         <div className="mt-16 grid grid-cols-1 gap-10 border-t border-paper/15 py-12 md:grid-cols-4">

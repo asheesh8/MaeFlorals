@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, EB_Garamond, Jost } from "next/font/google";
-import SmoothScroll from "@/components/SmoothScroll";
+import Footer from "@/components/Footer";
+import Header from "@/components/Header";
 import { site } from "@/lib/content";
 import "./globals.css";
 
@@ -58,7 +59,7 @@ const jsonLd = {
   sameAs: [site.facebook],
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${cormorant.variable} ${garamond.variable} ${jost.variable}`}>
       <body>
@@ -66,8 +67,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <SmoothScroll />
+        <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );
