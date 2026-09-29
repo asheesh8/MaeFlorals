@@ -6,12 +6,12 @@ export default function Footer() {
     <footer className="relative overflow-hidden bg-night pt-20 text-paper">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <Image
-          src="/brand/mae-florals-logo.png"
-          alt="Mae Florals — lavender and white flowers with green leaves"
-          width={1075}
-          height={1205}
-          sizes="280px"
-          className="mx-auto h-auto w-60 rounded-[28px] md:w-72"
+          src="/brand/mae-florals-logo-horizontal.png"
+          alt="Mae Florals — Floral Art & Preservation, with lavender and white flowers"
+          width={1516}
+          height={1122}
+          sizes="(min-width: 768px) 420px, 320px"
+          className="mx-auto h-auto w-80 rounded-[28px] md:w-[420px]"
         />
         <Image src="/art/garland.webp" alt="" width={1600} height={677} className="mx-auto mt-2 h-auto w-full max-w-4xl opacity-90" />
         <p className="label mt-4 text-center text-paper/55">Floral art &amp; preservation · {site.town}</p>

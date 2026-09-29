@@ -9,13 +9,14 @@ function BrandLogo() {
   return (
     <span className="relative block h-11 w-[148px] overflow-hidden rounded-[9px] bg-black shadow-sm sm:w-[168px]">
       <Image
-        src="/brand/mae-florals-logo.png"
+        src="/brand/mae-florals-logo-horizontal.png"
         alt=""
-        width={1075}
-        height={1205}
+        width={1516}
+        height={1122}
         priority
+        unoptimized
         sizes="(min-width: 640px) 168px, 148px"
-        className="absolute -top-[39px] left-0 h-auto w-full sm:-top-[45px]"
+        className="absolute left-0 top-0 h-auto w-full"
       />
     </span>
   );
