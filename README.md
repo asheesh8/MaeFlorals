@@ -3,6 +3,8 @@
 Website for **Mae Florals — Floral Art & Preservation** (Melissa, Claremont, NH).
 Wedding bouquet preservation, sympathy flower keepsakes, pet memorials in resin and fresh arrangements.
 
+**Live:** https://mae-florals.vercel.app — Vercel, stock Next.js preset; pushes to `main` deploy to production. No environment variables.
+
 ## Stack
 
 - Next.js 16 (App Router, static) + Tailwind CSS v4
